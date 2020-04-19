@@ -1,0 +1,34 @@
+
+plugins {
+    kotlin("jvm") version "1.3.20"
+    id("com.pjcampi.gradle.thrift.thrift-build-plugin") version "1.0.0"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.apache.thrift:libthrift:0.13.+")
+    thrift(files("src/main/resources/schemas.zip"))
+}
+
+thrift {
+    executable {
+        artifact = file("src/main/resources/thrift")
+        options = listOf("-v")
+    }
+
+    sourceSetOptions {
+        named("main") {
+            language = "java"
+            files = listOf("**/service.thrift")
+            options = listOf("fullcamel", "beans")
+            outputDirectory = file("src/main/thrift/compiled")
+        }
+    }
+
+    extractOutputDirectory = file("src/main/thrift/schemas")
+}

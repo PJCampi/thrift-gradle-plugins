@@ -1,0 +1,31 @@
+
+plugins {
+    kotlin("jvm") version "1.3.20"
+    id("com.pjcampi.gradle.thrift.thrift-build-plugin") version "1.0.0"
+    }
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+}
+
+sourceSets {
+    main {
+        thrift {
+            srcDir(file("src/main/thrift"))
+        }
+    }
+}
+
+thrift {
+    sourceSetOptions {
+        named("main") {
+            language = "python"
+            outputDirectory = file("src/main/python")
+        }
+    }
+}
